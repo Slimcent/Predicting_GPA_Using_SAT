@@ -1,16 +1,25 @@
-# This is a sample Python script.
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import statsmodels.api as sm
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+data = pd.read_csv('satData.csv')
+print(data.describe())
 
+y = data['GPA']
+x1 = data['SAT']
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+plt.scatter(x1, y)
+yhat = 0.0017 * x1 + 0.275
+fig = plt.plot(x1, yhat, lw=4, c='orange', label='regression line')
 
+plt.xlabel('SAT', fontsize=20)
+plt.ylabel('GPA', fontsize=20)
+plt.show()
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+x = sm.add_constant(x1)
+results = sm.OLS(y, x).fit()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(results)
+
+print(results.summary())
